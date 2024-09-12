@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beans</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f5f0e6; /* Aged paper background */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Navigation Styling */
+        .sidebar {
+            width: 200px;
+            background-color: #fefaf2; /* Light paper color for sidebar */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 1px solid #c1b9a5;
+        }
+
+        .sidebar h2 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #c1b9a5;
+        }
+
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5e9d7;
+            transition: background-color 0.3s; /* Smooth hover effect */
+        }
+
+        .sidebar a:hover {
+            background-color: #f5e9d7;
+        }
+
+        /* Main Container Styling */
+        .container {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: #fefaf2; /* Background color for main content */
+            margin: 20px;
+            border: 1px solid #c1b9a5;
+            position: relative;
+            overflow-y: auto; /* Allows scrolling if content overflows */
+        }
+
+        /* Header and Typography Styling */
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #c1b9a5;
+            padding-bottom: 8px;
+        }
+
+        p {
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        /* Search Bar Styling */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #c1b9a5;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            height: 40px;
+            padding: 5px;
+            font-size: 1em;
+            border: 1px solid #c1b9a5;
+            background-color: #fefaf2;
+            color: #333;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        .search-bar input:focus,
+        .search-bar select:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        /* Review Item Styling */
+        .review-item {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0d5c5;
+            position: relative;
+            padding-left: 30px; /* Space for user comments */
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            justify-content: start;
+        }
+
+        .review-item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .review-item .stars img {
+            width: 20px;
+            height: auto;
+            margin-right: 2px;
+        }
+
+        .bean {
+            width: 20px; /* Adjust width as needed */
+            height: auto;
+            cursor: pointer; /* Cursor indicates clickable beans */
+            transition: transform 0.3s; /* Smooth scale effect */
+        }
+
+        .bean:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+
+        .review-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* User Comments Section */
+        .comments {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f7f3eb;
+            border: 1px solid #e0d5c5;
+            border-radius: 4px;
+        }
+
+        .comments h3 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+            border-bottom: 1px solid #c1b9a5;
+            padding-bottom: 5px;
+        }
+
+        .comments p {
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* Comment Input and Buttons */
+        .comment-form {
+            display: flex;
+            align-items: center; /* Align items vertically */
+            gap: 10px; /* Space between input and button */
+            margin-top: 10px;
+        }
+
+        .comment-form input[type="text"] {
+            flex-grow: 1; /* Make the input take available space */
+            padding: 8px;
+            border: 1px solid #c1b9a5;
+            background-color: #fefaf2;
+            color: #333;
+            font-size: 0.85em;
+        }
+
+        .comment-form button {
+            padding: 8px 12px;
+            border: 1px solid #c1b9a5;
+            background-color: #fefaf2;
+            color: #333;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s; /* Smooth effects */
+        }
+
+        .comment-form button:hover {
+            background-color: #e8e0d0;
+            transform: scale(1.02); /* Slight growth on hover */
+        }
+
+        /* Button and Input Styling */
+        button, input[type="text"] {
+            font-family: 'Courier New', Courier, monospace;
+            padding: 8px 12px;
+            border: 1px solid #c1b9a5;
+            background-color: #fefaf2;
+            color: #333;
+            transition: background-color 0.3s, transform 0.2s; /* Smooth effects */
+        }
+
+        button:hover, input[type="text"]:focus {
+            background-color: #e8e0d0;
+            outline: none; /* Remove input field outline */
+            transform: scale(1.02); /* Slight growth on hover/focus */
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #c1b9a5;
+            }
+            .container {
+                margin: 0;
+                border: none;
+                padding: 15px;
+            }
+            /* Hide filter boxes on mobile */
+            .search-bar select {
+                display: none; /* Hide select elements on mobile */
+            }
+        }
+
+        /* Additional Hover and Focus Effects */
+        .review-item:hover {
+            background-color: #f9f6f0; /* Light background on hover */
+            cursor: pointer; /* Change cursor on hover */
+        }
+
+        .selected {
+            opacity: 0.7; /* Example styling for selected beans */
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="beans.html">Feed</a>
+        <a href="map.html">Map</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <div class="container">
+        <h1>Beans</h1>
+        
+        <div class="search-bar">
+            <input type="text" id="search-bar" placeholder="Search reviews..." oninput="searchReviews()">
+            <select id="filter-location" onchange="searchReviews()">
+                <option value="">All Locations</option>
+                <option value="London">London</option>
+                <option value="Bristol">Bristol</option>
+                <!-- Add more locations as needed -->
+            </select>
+            <select id="filter-rating" onchange="searchReviews()">
+                <option value="">All Ratings</option>
+                <option value="5">5 Coffee Beans</option>
+                <option value="4">4 Coffee Beans</option>
+                <option value="3">3 Coffee Beans</option>
+                <option value="2">2 Coffee Beans</option>
+                <option value="1">1 Coffee Bean</option>
+            </select>
+        </div>
+        <!-- Reviews Section -->
+        <div class="reviews">
+            <div class="review-item" data-name="The Common Beaver" data-location="London" data-rating="4">
+                <div class="review-header">
+                    <h3>The Common Beaver</h3>
+                    <div class="stars">
+                        <!-- Coffee beans for rating -->
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 1)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 2)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 3)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 4)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 5)">
+                    </div>
+                </div>
+                <p>Great ambiance with an excellent selection of coffee blends.</p>
+
+                <!-- User Comments Section -->
+                <div class="comments">
+                    <h3>User Comments (<span id="comment-count-1">2</span>)</h3>
+                    <div id="comment-section-1" class="comment-container">
+                        <p><strong>User1:</strong> Loved the atmosphere, but the coffee could be better.</p>
+                        <p><strong>User2:</strong> Great service, will definitely come back!</p>
+                    </div>
+                    <button onclick="toggleComments(1)" id="toggle-button-1">View More</button>
+                    <input type="text" id="comment-input-1" placeholder="Add a comment...">
+                    <button onclick="addComment(1)">Add Comment</button>
+                </div>
+            </div>
+
+            <!-- Additional Reviews -->
+            <div class="review-item" data-name="The Java House" data-location="Bristol" data-rating="5">
+                <div class="review-header">
+                    <h3>The Java House</h3>
+                    <div class="stars">
+                        <!-- Coffee beans for rating -->
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 1)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 2)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 3)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 4)">
+                        <img src="graphics/bean.png" alt="bean" class="bean" onclick="rateReview(this, 5)">
+                    </div>
+                </div>
+                <p>Amazing coffee, friendly staff, and a vibrant atmosphere.</p>
+                
+                <!-- User Comments Section -->
+                <div class="comments">
+                    <h3>User Comments (<span id="comment-count-2">2</span>)</h3>
+                    <div id="comment-section-2" class="comment-container">
+                        <p><strong>User3:</strong> Best coffee in town, hands down.</p>
+                        <p><strong>User4:</strong> Cozy place, highly recommend!</p>
+                    </div>
+                    <button onclick="toggleComments(2)" id="toggle-button-2">View More</button>
+                    <input type="text" id="comment-input-2" placeholder="Add a comment...">
+                    <button onclick="addComment(2)">Add Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle dynamic rating by user
+        function rateReview(bean, rating) {
+            const starsContainer = bean.parentElement;
+            const allBeans = starsContainer.querySelectorAll('.bean');
+    
+            // Clear all previous selections
+            allBeans.forEach((b) => b.classList.remove('selected'));
+    
+            // Highlight beans up to the clicked one
+            for (let i = 0; i < rating; i++) {
+                allBeans[i].classList.add('selected');
+            }
+    
+            // Display user's rating feedback
+            alert(`You rated this review ${rating} coffee beans!`);
+        }
+    
+        // Function to add comments
+        function addComment(reviewId) {
+            const input = document.getElementById(`comment-input-${reviewId}`);
+            const commentSection = document.getElementById(`comment-section-${reviewId}`);
+            const newComment = input.value.trim();
+    
+            if (newComment) {
+                const commentElement = document.createElement('p');
+                commentElement.innerHTML = `<strong>You:</strong> ${newComment}`;
+                commentSection.appendChild(commentElement);
+                input.value = ''; // Clear the input
+    
+                // Update comment count
+                updateCommentCount(reviewId);
+    
+                // Limit comments displayed
+                limitCommentsDisplayed(reviewId);
+            }
+        }
+    
+        // Function to update the comment count dynamically
+        function updateCommentCount(reviewId) {
+            const commentSection = document.getElementById(`comment-section-${reviewId}`);
+            const commentCount = commentSection.querySelectorAll('p').length;
+            document.getElementById(`comment-count-${reviewId}`).innerText = commentCount;
+        }
+    
+        // Function to limit comments displayed
+        function limitCommentsDisplayed(reviewId) {
+            const commentSection = document.getElementById(`comment-section-${reviewId}`);
+            const comments = commentSection.querySelectorAll('p');
+            const toggleButton = document.getElementById(`toggle-button-${reviewId}`);
+    
+            // Hide all comments except the latest 4
+            comments.forEach((comment, index) => {
+                comment.classList.toggle('hidden', index >= 4);
+            });
+    
+            // Update toggle button text
+            if (comments.length > 4) {
+                toggleButton.style.display = 'block';
+                toggleButton.innerText = 'View More';
+            } else {
+                toggleButton.style.display = 'none';
+            }
+        }
+    
+        // Function to toggle all comments
+        function toggleComments(reviewId) {
+            const commentSection = document.getElementById(`comment-section-${reviewId}`);
+            const comments = commentSection.querySelectorAll('p');
+            const toggleButton = document.getElementById(`toggle-button-${reviewId}`);
+    
+            // Determine if comments are currently expanded
+            const areAllVisible = Array.from(comments).every(comment => !comment.classList.contains('hidden'));
+    
+            if (areAllVisible) {
+                // Collapse back to showing only the latest 4 comments
+                comments.forEach((comment, index) => {
+                    if (index >= 4) {
+                        comment.classList.add('hidden');
+                    }
+                });
+                toggleButton.innerText = 'View More';
+            } else {
+                // Expand to show all comments
+                comments.forEach(comment => comment.classList.remove('hidden'));
+                toggleButton.innerText = 'View Less';
+            }
+        }
+    
+        // Function to filter reviews based on search input and filters
+        function searchReviews() {
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            const filterLocation = document.getElementById('filter-location').value.toLowerCase();
+            const filterRating = document.getElementById('filter-rating').value;
+
+            const reviews = document.querySelectorAll('.review-item');
+    
+            reviews.forEach(review => {
+                const name = review.getAttribute('data-name').toLowerCase();
+                const location = review.getAttribute('data-location').toLowerCase();
+                const rating = review.getAttribute('data-rating');
+    
+                const matchesSearch = name.includes(searchTerm) || location.includes(searchTerm);
+                const matchesLocation = filterLocation === '' || location === filterLocation;
+                const matchesRating = filterRating === '' || rating === filterRating;
+
+                if (matchesSearch && matchesLocation && matchesRating) {
+                    review.style.display = 'block';
+                } else {
+                    review.style.display = 'none';
+                }
+            });
+        }
+
+        // Function to initialize the map with coffee shop locations
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 54.5, lng: -3.0 }, // Center of the UK
+                zoom: 6,
+            });
+    
+            const locations = [
+                { name: 'The Common Beaver', lat: 51.5074, lng: -0.1278 }, // Example location in London
+                { name: 'The Java House', lat: 51.4545, lng: -2.5879 }, // Example location in Bristol
+            ];
+    
+            // Add map markers for each location
+            locations.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name
+                });
+    
+                // Add click event listener to each marker
+                marker.addListener("click", () => {
+                    alert(`You clicked on ${location.name}`);
+                    // Implement review display logic here
+                });
+            });
+        }
+    
+        // Initialize functionalities after DOM content is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            limitCommentsDisplayed(1);
+            limitCommentsDisplayed(2);
+            // Initialize map (make sure Google Maps API is loaded)
+            if (typeof google !== 'undefined') {
+                initMap();
+            }
+        });
+    </script>
+</body>
+</html>
