@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beans</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f5f0e6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #fefaf2;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 1px solid #c1b9a5;
+        }
+
+        .sidebar h2 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #c1b9a5;
+        }
+
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5e9d7;
+        }
+
+        .sidebar a:hover {
+            background-color: #f5e9d7;
+        }
+
+        .container {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: #fefaf2;
+            margin: 20px;
+            border: 1px solid #c1b9a5;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #c1b9a5;
+            padding-bottom: 8px;
+        }
+
+        p {
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .review-item {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0d5c5;
+        }
+
+        .review-header {
+            display: flex; /* Align title and stars in a row */
+            align-items: center; /* Vertically center items */
+            gap: 10px; /* Space between title and stars */
+            flex-wrap: nowrap;
+            justify-content: start;
+        }
+
+        .review-item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .review-item .stars img {
+            width: 20px; /* Set width for star images */
+            height: auto;
+            margin-right: 2px;
+        }
+
+        .bean {
+            width: 10% !important; /* Adjust width as needed */
+            height: auto;
+        }
+
+        .review-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="beans.html">Feed</a>
+        <a href="map.html">Map</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <div class="container">
+        <h1>Beans</h1>
+        <p>blah blah blah</p>
+
+        <!-- Reviews Section -->
+        <div class="reviews">
+            <div class="review-item">
+                <div class="review-header">
+                    <h3>The Common Beaver</h3>
+                    <div class="stars">
+                        <img src="graphics/beans4.png" alt="bean" class="bean">
+                    </div>
+                </div>
+                <p>Great ambiance with an excellent selection of coffee blends.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
